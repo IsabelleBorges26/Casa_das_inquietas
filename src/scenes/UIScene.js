@@ -1,3 +1,4 @@
+
 import Phaser from 'phaser';
 import { COLORS, COLOR_STRINGS, GAME_WIDTH, GAME_HEIGHT, PUZZLE_SEQUENCES } from '../config.js';
 import { sounds } from '../systems/SoundSystem.js';
@@ -224,29 +225,46 @@ export default class UIScene extends Phaser.Scene {
     const w = GAME_WIDTH;
     const h = GAME_HEIGHT;
 
-    const overlay = this.add.rectangle(w / 2, h / 2, w, h, 0x1A0E1C, 0.85).setInteractive().setDepth(30);
+    const overlay = this.add.rectangle(w / 2, h / 2, w, h, 0x1A0E1C, 0.85)
+      .setInteractive()
+      .setDepth(30);
 
     const paper = this.add.rectangle(w / 2, h / 2, 460, 260, 0xFFF2D6)
       .setStrokeStyle(3, 0xD4AF7A, 0.9)
       .setDepth(31);
 
-    const seal = this.add.circle(w / 2 + 190, h / 2 + 90, 16, 0xB32D48).setDepth(32);
-    const sealInner = this.add.circle(w / 2 + 190, h / 2 + 90, 12, 0x8C1B33).setDepth(32);
+    const seal = this.add.circle(w / 2 + 190, h / 2 + 90, 16, 0xB32D48)
+      .setDepth(32);
+    const sealInner = this.add.circle(w / 2 + 190, h / 2 + 90, 12, 0x8C1B33)
+      .setDepth(32);
 
+    // Limita a largura e a altura para o texto nunca sair do papel.
     const content = this.add.text(w / 2, h / 2 - 20, text, {
       fontFamily: 'Caveat, cursive, sans-serif',
-      fontSize: '26px',
+      fontSize: '23px',
       color: '#4A3228',
       align: 'center',
-      lineSpacing: 6
-    }).setOrigin(0.5).setDepth(32);
+      lineSpacing: 3,
+      wordWrap: {
+        width: 370,
+        useAdvancedWrap: true
+      },
+      fixedWidth: 380,
+      fixedHeight: 145,
+      maxLines: 6
+    })
+      .setOrigin(0.5)
+      .setDepth(32);
 
-    const closeBtn = this.add.text(w / 2, h / 2 + 90, '[ Guardar bilhete ]', {
+    const closeBtn = this.add.text(w / 2, h / 2 + 91, '[ Guardar bilhete ]', {
       fontFamily: 'Fredoka, sans-serif',
-      fontSize: '16px',
+      fontSize: '15px',
       color: '#B32D48',
       fontStyle: '600'
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(32);
+    })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .setDepth(33);
 
     const closeHandler = () => {
       sounds.playPaperSound();
